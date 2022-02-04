@@ -1,5 +1,5 @@
 const express = require('express');
-const { PORT = 3000 } = process.env;
+const { PORT = 5000 } = process.env;
 const mongoose = require('mongoose');
 const router = require('./routes/products') 
 
