@@ -16,3 +16,18 @@
   margin: 0 auto;
   box-sizing: border-box;
 }
+
+.alignment {
+  margin: 0 70px;
+}
+
+.link {
+  text-decoration: none;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.3s linear 0.1s;
+}
+
+.link:hover {
+  opacity: 0.8;
+}

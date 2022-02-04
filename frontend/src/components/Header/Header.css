@@ -1,0 +1,25 @@
+.header {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.navigation__link {
+  font-size: 17px;
+}
+
+.navigation__link_active {
+  border-bottom: 1px solid white;
+}
+
+@media screen and (max-width: 576px) {
+  .navigation__link {
+    font-size: 13px;
+  }
+}
