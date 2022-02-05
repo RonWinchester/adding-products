@@ -1,0 +1,45 @@
+.element {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #807c7c;
+}
+
+.element__title {
+  font-size: 22px;
+  font-weight: 500;
+  line-height: 25px;
+  margin: 0;
+}
+
+.element__description {
+  font-size: 17px;
+  font-weight: 100;
+  line-height: 21px;
+  margin: 0;
+  text-align: justify;
+}
+
+.element__params {
+  list-style: none;
+  padding: 0;
+}
+
+.element__setting {
+  font-size: 15px;
+  line-height: 20px;
+  opacity: 0.8;
+}
+
+@media screen and (max-width: 992px) {
+  .element__title {
+    font-size: 18px;
+    line-height: 20px;
+  }
+
+  .element__description {
+    font-size: 15px;
+    line-height: 20px;
+  }
+}

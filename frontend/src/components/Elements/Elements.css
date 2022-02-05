@@ -1,0 +1,16 @@
+.elements {
+  width: 70%;
+  list-style: none;
+  display: flex;
+  padding: 0;
+  flex-direction: column;
+  gap: 25px;
+  margin: 0;
+}
+
+.elements__plug {
+  font-size: 30px;
+  font-weight: 500;
+  opacity: .3;
+  padding: 0;
+}
