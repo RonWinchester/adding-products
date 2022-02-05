@@ -31,7 +31,7 @@ module.exports.getProduct = (req, res) => {
       const result = products.filter((product) => {
         return product.title.toLowerCase().includes(title.toLowerCase());
       });
-      res.status(200).send({ result });
+      res.status(200).send(result);
     })
     .catch((err) => {
       res.status(500).send({
