@@ -1,0 +1,67 @@
+.addForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.addForm__title {
+  font-weight: 500;
+}
+
+.addForm__fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: none;
+}
+
+.addForm__input {
+  box-sizing: border-box;
+  width: 100%;
+  font-weight: 500;
+  font-size: 20px;
+  line-height: 28px;
+  color: #ffffff;
+  height: 30px;
+  background-color: rgb(173, 173, 173);
+  padding: 13px 13px;
+  outline: none;
+  border: none;
+  cursor: pointer;
+}
+
+.addForm__input:hover {
+  opacity: 0.3;
+}
+
+.addForm__input:focus {
+  opacity: 0.9;
+}
+
+.addForm__subtitle {
+  font-size: 20px;
+  font-weight: 100;
+  margin: 0;
+}
+
+.addForm__button {
+  box-sizing: border-box;
+  max-width: 300px;
+  width: 100%;
+  outline: none;
+  background-color: rgb(255, 255, 255);
+  border: none;
+  cursor: pointer;
+  line-height: 20px;
+}
+
+.addForm__button:hover {
+  opacity: 0.9;
+}
+
+@media screen and (max-width: 992px) {
+  .addForm__title {
+    font-size: 20px;
+  }
+}
