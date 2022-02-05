@@ -1,7 +1,5 @@
 import React from "react";
 
-const products = {
-    product: []
-}
+const product = []
 
-export const Context = React.createContext(products);
+export const Context = React.createContext(product);
