@@ -6,11 +6,12 @@ function SearchForm({ handleRequest }) {
 
   function handleSearchChange(e) {
     setQuery(e.target.value);
+    e.target.value === '' && handleRequest(e.target.value);
   }
 
   const handleSubmit = (evt) => {
     evt.preventDefault();
-      return handleRequest(query);
+    return handleRequest(query);
   };
 
   return (
@@ -30,7 +31,7 @@ function SearchForm({ handleRequest }) {
             name="name-search"
             className="search-form__input"
             onChange={handleSearchChange}
-            autoComplete='none'
+            autoComplete="none"
             value={query}
           />
         </label>
