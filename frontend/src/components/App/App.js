@@ -3,19 +3,41 @@ import { Route, Routes } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
 import Header from "../Header/Header";
 import Content from "../Content/Content";
-import { getProduct } from "../../utils/api/Api";
+import { getProduct, movieSearch, createProduct } from "../../utils/api/Api";
 import { Context } from "../../contexts/context";
+import Footer from "../Footer/Footer";
+import AddForm from "../AddForm/AddForm";
 
 function App() {
   const [product, setProduct] = React.useState([]);
   function handleRequest(query) {
-    console.log(query);
+    movieSearch(query)
+      .then((res) => {
+        setProduct(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  function handleFormRequest(data) {
+    createProduct(data)
+      .then((res) => {
+        getProduct().then((res) => {
+          const { product } = res;
+          setProduct(product);
+        });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
   React.useLayoutEffect(() => {
     getProduct()
       .then((res) => {
-        setProduct(res);
+        const { product } = res;
+        setProduct(product);
       })
       .catch((err) => {
         console.log(err);
@@ -35,6 +57,7 @@ function App() {
                 <>
                   <SearchForm handleRequest={handleRequest} />
                   <Content />
+                  <Footer />
                 </>
               }
             />
@@ -43,7 +66,7 @@ function App() {
               path="/create"
               element={
                 <>
-                  <div />
+                  <AddForm handleFormRequest={handleFormRequest} />
                 </>
               }
             />
