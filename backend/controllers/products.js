@@ -29,7 +29,11 @@ module.exports.getProduct = (req, res) => {
   Product.find({})
     .then((products) => {
       const result = products.filter((product) => {
-        return product.title.toLowerCase().includes(title.toLowerCase());
+        return (
+          product.title.toLowerCase().includes(title.toLowerCase()) ||
+          product.params.brand.toLowerCase().includes(title.toLowerCase()) ||
+          product.params.type.toLowerCase().includes(title.toLowerCase())
+        );
       });
       res.status(200).send(result);
     })
@@ -41,23 +45,28 @@ module.exports.getProduct = (req, res) => {
 };
 
 module.exports.getParamsProduct = (req, res) => {
-  const { params } = req.body;
-  const condition =
-    Object.keys(params).length > 1
-      ? {
-          "params.type": params.type,
-          "params.brand": params.brand,
-        }
-      : {
-          $or: [
-            { "params.type": params.type },
-            { "params.brand": params.brand },
-          ],
-        };
-
-  Product.find(condition)
+  const data = req.body;
+  Product.find({})
     .then((products) => {
-      res.status(200).send({ products });
+      if (data.length === 0) {
+        return res.status(200).send(products);
+      }
+      let filterData = null;
+
+      let result = []
+
+      data.forEach((element) => {
+        filterData = products.filter((product) => {
+          return (
+            product.params.brand
+              .toLowerCase()
+              .includes(element.toLowerCase()) ||
+            product.params.type.toLowerCase().includes(element.toLowerCase())
+          );
+        });
+        result.length > 0 ? (result = [...result, ...filterData]) : (result =[...filterData])        
+      });
+      res.status(200).send(Array.from(new Set(result)));
     })
     .catch((err) => {
       res.status(500).send({
