@@ -12,7 +12,7 @@ export function getProduct() {
   });
 }
 
-export function movieSearch(query) {
+export function productSearch(query) {
   return fetch(`${apiUrl}product`, {
     method: "POST",
     headers: {
@@ -42,6 +42,20 @@ export function createProduct(data) {
           type: data.params.type,
           brand: data.params.brand,
         }}),
+  }).then((res) => {
+    return getResponseData(res);
+  });
+}
+
+
+export function productFilter(data) {
+  return fetch(`${apiUrl}params`, {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
   }).then((res) => {
     return getResponseData(res);
   });
