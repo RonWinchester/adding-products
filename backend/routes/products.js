@@ -3,7 +3,7 @@ const { createProduct, getProducts, getProduct, getParamsProduct } = require("..
 
 router.get("/", getProducts);
 router.post("/product", getProduct);
-router.get("/params", getParamsProduct);
+router.post("/params", getParamsProduct);
 router.post("/", createProduct);
 
 module.exports = router;
