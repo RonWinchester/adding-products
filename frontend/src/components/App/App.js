@@ -39,6 +39,10 @@ function App() {
         getProduct().then((res) => {
           const { product } = res;
           setProduct(product);
+          localStorage.setItem(
+            "allData",
+            JSON.stringify(Array.from(new Set(product)))
+          );
         });
         alert('Товар добавлен успешно!')
       })
