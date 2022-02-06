@@ -1,9 +1,14 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import SearchForm from "../SearchForm/SearchForm";
 import Header from "../Header/Header";
 import Content from "../Content/Content";
-import { getProduct, movieSearch, createProduct } from "../../utils/api/Api";
+import {
+  getProduct,
+  productSearch,
+  createProduct,
+  productFilter,
+} from "../../utils/api/Api";
 import { Context } from "../../contexts/context";
 import Footer from "../Footer/Footer";
 import AddForm from "../AddForm/AddForm";
@@ -11,7 +16,7 @@ import AddForm from "../AddForm/AddForm";
 function App() {
   const [product, setProduct] = React.useState([]);
   function handleRequest(query) {
-    movieSearch(query)
+    productSearch(query)
       .then((res) => {
         setProduct(res);
       })
@@ -20,6 +25,14 @@ function App() {
       });
   }
 
+  const location = useLocation();
+
+  React.useEffect(() => {
+    localStorage.setItem("data", JSON.stringify([]));
+    const allProduct = JSON.parse(localStorage.getItem("allData"));
+    setProduct(allProduct);
+  }, [location]);
+
   function handleFormRequest(data) {
     createProduct(data)
       .then((res) => {
@@ -27,6 +40,20 @@ function App() {
           const { product } = res;
           setProduct(product);
         });
+        alert('Товар добавлен успешно!')
+      })
+      .catch((err) => {
+        console.log(err);
+        alert('Что-то пошло не так')
+      });
+  }
+
+  function handleSubmit(evt) {
+    evt.preventDefault();
+    const product = JSON.parse(localStorage.getItem("data"));
+    productFilter(product)
+      .then((res) => {
+        setProduct(res);
       })
       .catch((err) => {
         console.log(err);
@@ -38,6 +65,11 @@ function App() {
       .then((res) => {
         const { product } = res;
         setProduct(product);
+        localStorage.setItem("data", JSON.stringify([]));
+        localStorage.setItem(
+          "allData",
+          JSON.stringify(Array.from(new Set(product)))
+        );
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +88,7 @@ function App() {
               element={
                 <>
                   <SearchForm handleRequest={handleRequest} />
-                  <Content />
+                  <Content handleSubmit={handleSubmit} />
                   <Footer />
                 </>
               }

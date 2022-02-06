@@ -1,65 +1,125 @@
 import React from "react";
 import { Context } from "../../contexts/context";
 
-function SideBar() {
+function SideBar({ handleSubmit }) {
   const context = React.useContext(Context);
-  const [checked, setChecked] = React.useState(null)
-  function chengeCheckbox(e) {
-    setChecked(e.target.value);
-    console.log(e.target.value)
- }
 
-  function handleSubmit(evt) {
-    evt.preventDefault();
-    console.log()
-  }
+  const allProduct = JSON.parse(localStorage.getItem("allData"));
 
   let onlyParams = [];
-  let paramsName = [];
   let types = new Set();
   let brands = new Set();
 
-  context.forEach((element) => {
-    onlyParams.push(element.params);
-  });
+  allProduct === null
+    ? context.forEach((element) => {
+        onlyParams.push(element.params);
+      })
+    : allProduct.forEach((element) => {
+        onlyParams.push(element.params);
+      });
 
   onlyParams.forEach((element) => {
-    paramsName = Object.keys(element).slice(0, -1);
     types.add(Object.values(element).slice(0, -1)[0]);
     brands.add(Object.values(element).slice(0, -1)[1]);
   });
 
-  let allSpecifications = [Array.from(types), Array.from(brands)];
+  const [checkedState, setCheckedState] = React.useState(
+    new Array(types.length).fill(false)
+  );
+
+  const [checkedStateBrand, setCheckedStateBrand] = React.useState(
+    new Array(types.length).fill(false)
+  );
+
+  const handleOnChange = (e, position) => {
+    if (Array.from(types).includes(e.target.value)) {
+      const updatedCheckedState = checkedState.map((item, index) =>
+        index === position ? !item : item
+      );
+
+      setCheckedState(updatedCheckedState);
+    } else {
+      const updatedCheckedStateBrand = checkedStateBrand.map((item, index) =>
+        index === position ? !item : item
+      );
+
+      setCheckedStateBrand(updatedCheckedStateBrand);
+    }
+
+    if (e.target.checked) {
+      const product = JSON.parse(localStorage.getItem("data"));
+      if (product !== null) {
+        product.push(e.target.value);
+        return localStorage.setItem(
+          "data",
+          JSON.stringify(Array.from(new Set(product)))
+        );
+      } else {
+        return localStorage.setItem("data", JSON.stringify([e.target.value]));
+      }
+    } else {
+      const product = JSON.parse(localStorage.getItem("data"));
+      const newProduct = new Set(product);
+      newProduct.delete(e.target.value);
+      if (product !== null) {
+        return localStorage.setItem(
+          "data",
+          JSON.stringify(Array.from(newProduct))
+        );
+      }
+    }
+  };
+
   return (
     <form className="sidebar">
       <h2 className="sidebar__title">Фильтр</h2>
       {
         <ul className="element__settings">
-          {paramsName.length > 0 ? (
-            paramsName.map((element, index) => (
-              <li className="element__setting" key={index}>
+          Тип:
+          {Array.from(types).map((element, index) => (
+            <li
+              key={index}
+              className="element__setting element__setting_nested"
+            >
+              <label htmlFor="checkbox" className="sidebar__label">
+                <input
+                  type="checkbox"
+                  className="sidebar__input"
+                  value={element}
+                  name={element}
+                  checked={checkedState[index]}
+                  onChange={(e) => handleOnChange(e, index)}
+                />
                 {element}
-                <ul className="element__settings">
-                  {allSpecifications[index].map((el, indx) => (
-                    <li
-                      key={indx}
-                      className="element__setting element__setting_nested"
-                    >
-                      <label htmlFor="checkbox" className="sidebar__label">
-                        <input type="checkbox" className="sidebar__input" value={el} name={el} checked={el === checked} onChange={(e)=> chengeCheckbox(e)}/>
-                        {el}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </li>
-            ))
-          ) : (
-            <p>Нет фильтров</p>
-          )}
+              </label>
+            </li>
+          ))}
         </ul>
       }
-      <button type="submit" className="sidebar__button" onClick={handleSubmit}>
+      {
+        <ul className="element__settings">
+          Бренд:
+          {Array.from(brands).map((element, index) => (
+            <li
+              key={index}
+              className="element__setting element__setting_nested"
+            >
+              <label htmlFor="checkbox" className="sidebar__label">
+                <input
+                  type="checkbox"
+                  className="sidebar__input"
+                  value={element}
+                  name={element}
+                  checked={checkedStateBrand[index]}
+                  onChange={(e) => handleOnChange(e, index)}
+                />
+                {element}
+              </label>
+            </li>
+          ))}
+        </ul>
+      }
+      <button type="click" className="sidebar__button" onClick={handleSubmit}>
         Применить
       </button>
     </form>
